@@ -20,31 +20,6 @@ Welcome to the Python for Data Science section. This area covers the essentials 
 
 Happy coding!
 
-
-
-### 📌 **README: List Slicing Techniques in Python**  
-
----
-
-## **📖 Overview**  
-This section explores **list slicing techniques** in Python, covering everything from basic indexing to advanced slicing patterns. Whether you're accessing specific elements, creating sublists, or applying step-based slicing, this guide provides structured examples to help you master list manipulation efficiently.  
-
----
-
-## **📌 File Name: `list_slicing_README.md`**  
-
----
-
-## **📂 Contents**  
-
-- 🔹 **[Basic Indexing](#basic-indexing)** – Access single elements  
-- 🔹 **[Simple Slices](#simple-slices)** – Extract specific ranges  
-- 🔹 **[Custom Ranges](#custom-ranges)** – Create dynamic subsets  
-- 🔹 **[Step-Based Slicing](#step-based-slicing)** – Skip elements efficiently  
-- 🔹 **[Smart Dynamic Slicing](#smart-dynamic-slicing)** – Adapt slicing based on list length  
-
----
-
 ## **1️⃣ Basic Indexing** (Access Single Elements)  
 ```python
 num_list = list(range(1, 21))  # Sample list from 1 to 20

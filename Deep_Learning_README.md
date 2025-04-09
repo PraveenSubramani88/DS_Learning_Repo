@@ -136,6 +136,7 @@ Think of the neuron like baking a cake:
 - 🔥 **Bias** = The oven temperature you can adjust to get the cake just right
 
 You can mix your ingredients all day, but if the oven’s not right, your cake won’t bake properly. That’s the role of **bias** — the fine-tuning knob!
+
 ---
 
 #### **How Weights and Biases Work Together:**
@@ -153,8 +154,6 @@ In a neural network, here’s what happens step-by-step:
 - **Training** a neural network is about adjusting the weights and biases to **reduce errors** in the model’s predictions. This is where the power of **deep learning** comes in—by fine-tuning these components, the network can become highly effective at recognizing patterns in things like images, speech, or text.
 
 In essence, weights and biases are the building blocks that allow a neural network to learn from data, make predictions, and improve over time. 🌟
-
-Absolutely! Let me break this down in a simple, beginner-friendly way, like we’re chatting over coffee. ☕️🙂
 
 ---
 

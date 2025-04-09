@@ -331,9 +331,6 @@ Proper **starting weights** help avoid both issues:
 6. **Repeat**: Until the network learns
 
 ---
-Awesome! You're now diving deep into one of the most **crucial aspects** of training neural networks — **optimization**. 🚀 Let's simplify and clarify all of this so it's *super intuitive*.
-
----
 
 ## 🧭 What Does an Optimizer Do?
 

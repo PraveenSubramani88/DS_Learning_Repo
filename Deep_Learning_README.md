@@ -100,6 +100,44 @@ In the world of **neural networks (NNs)**, **weights** and **biases** play a hug
 
 ---
 
+## 🤔 **What Are Biases in Neural Networks?**
+
+Imagine you're trying to guess someone's height based on their age. You might say:
+
+> "Height = 5 × Age"
+
+But that’s too simple. What if most people have **a base height** when they’re born (like 50 cm)? You’d want to adjust your equation to:
+
+> **Height = 5 × Age + 50**
+
+That **+50** is your **bias**!
+
+In neural networks, **biases are little numbers that help adjust the final output**. They are added after multiplying inputs by their weights.
+
+---
+
+## 🧠 Think of a Neuron Like This:
+
+```
+Output = (Input × Weight) + Bias
+```
+
+- **Input**: Your data (like age)
+- **Weight**: Importance of that input (how much age matters)
+- **Bias**: A fixed number added to tweak the result
+- **Output**: What the neuron decides (like predicted height)
+---
+## 🧁 Simple Analogy
+
+Think of the neuron like baking a cake:
+
+- 🧂 **Inputs** = Ingredients  
+- 🥄 **Weights** = How much of each ingredient  
+- 🔥 **Bias** = The oven temperature you can adjust to get the cake just right
+
+You can mix your ingredients all day, but if the oven’s not right, your cake won’t bake properly. That’s the role of **bias** — the fine-tuning knob!
+---
+
 #### **How Weights and Biases Work Together:**
 In a neural network, here’s what happens step-by-step:
 

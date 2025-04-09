@@ -202,18 +202,6 @@ Here’s a super-simplified version of the steps:
 
 ---
 
-| **Activation Function** | **What It Does (Simple)**                                      | **Used For**                         | **Think of It Like...**                         | **When to Use It**                                               | **Neuron Personality (Beginner-Friendly)**                          |
-|-------------------------|----------------------------------------------------------------|--------------------------------------|--------------------------------------------------|------------------------------------------------------------------|----------------------------------------------------------------------|
-| **Step**                | Turns ON (1) if input is above 0, otherwise OFF (0)            | Very basic decisions                 | A light switch — just ON or OFF                 | Not used much now — too simple for deep learning                  | Super strict — only says YES or NO                                 |
-| **Sigmoid**             | Gives output between 0 and 1                                    | Binary classification (yes/no tasks) | A dimmer switch — gently increases              | When you need a probability (like "yes = 0.9")                    | Careful — slowly decides between YES and NO                        |
-| **Tanh**                | Gives output between -1 and 1                                   | Hidden layers (where info is processed) | A mood meter — can go from sad to happy         | When you want to handle both negative and positive signals        | Emotional — shows both positive and negative feelings              |
-| **ReLU**                | Ignores negatives, keeps positives                             | Most common in hidden layers         | Positive vibes only — blocks bad vibes          | Default for hidden layers in deep neural networks                 | Only reacts to good input — ignores the rest                       |
-| **Leaky ReLU**          | Like ReLU, but gives small value for negatives too             | Fixing ReLU’s “dead neuron” problem | A friendlier ReLU — listens a little to bad too | Use when ReLU isn't learning (outputs are stuck at 0)             | Like ReLU, but more open-minded to bad input                       |
-| **Softmax**             | Turns outputs into probabilities that add up to 1              | Choosing between many classes        | A voting machine — spreads the scores fairly    | Use in the last layer when you need to pick one of many choices   | Fair — gives every option a chance                                 |
-| **Linear**              | Just passes the number as it is                                | Predicting numbers (regression)      | Just says the number it got                     | Use at the output layer in regression models                      | Honest — says exactly what it sees                                 |
-
----
-
 ## 🛤️ **Backpropagation, Simply Explained**
 
 ### 🎯 **Goal of Training a Neural Network:**

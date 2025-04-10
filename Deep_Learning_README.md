@@ -482,10 +482,6 @@ There are two ways:
 
 ---
 
-Awesome! Let’s break this all down into a **beginner-friendly guide** to the **common neural network architectures** and the tools used to build them — with simple language, analogies, and purpose for each one.
-
----
-
 ## 🧱 **Neural Network Architectures: The Building Blocks of Deep Learning**
 
 Think of neural networks like different types of machines — each designed for a specific kind of task. Just like you wouldn’t use a coffee machine to make toast, each network architecture is great at solving a **particular type of problem**.

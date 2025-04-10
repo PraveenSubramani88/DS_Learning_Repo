@@ -584,9 +584,6 @@ Other helpful tools:
 | Build anything general | ANN |
 
 ---
-Let's break this down **simply** and make it super clear, step by step! You're learning about some of the **most powerful tools in AI today**, and you're doing great. Here's your **beginner-friendly guide to GenAI, LLMs, and Transformers**:
-
----
 
 ## 🌟 **What is GenAI (Generative AI)?**
 

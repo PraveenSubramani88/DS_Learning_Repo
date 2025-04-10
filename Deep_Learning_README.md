@@ -707,9 +707,6 @@ That's why developers, researchers, and society need to use them **carefully and
 - **Why it matters** = LLMs are changing how we work, create, and communicate — but we must use them wisely
 
 ---
-Alright! Let’s make this last section super **easy to understand**, especially if you’re just starting out with concepts like **Transfer Learning**, **GPT**, and **Transformers**. I’ll explain the key ideas first, then we’ll go through the code examples in a friendly way.
-
----
 
 ## 🧠 **What is Transfer Learning (TL)?**
 

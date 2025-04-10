@@ -19,6 +19,8 @@ This section is dedicated to Machine Learning (ML) concepts, algorithms, and pro
 
 Dive in and start learning!
 
+---
+
 ### **Beginner-Friendly Explanation: Machine Learning Workflow**  
 
 Machine learning is all about teaching computers to learn patterns from data so they can make decisions or predictions. The **machine learning workflow** is the step-by-step process used to build and apply these models. Think of it like a recipe for solving a problem using data.  

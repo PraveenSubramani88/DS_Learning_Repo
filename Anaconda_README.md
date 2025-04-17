@@ -9,7 +9,7 @@ How to activate your environment and launch Jupyter Notebook:
 cd C:\_BigDataCourses\_Projects
 ```
 
-### 🧪 List Available Conda Environments
+### 🧪 List Available Conda Environments (Optional : if you know your Env)
 ```bash
 conda info --envs
 ```

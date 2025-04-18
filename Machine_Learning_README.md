@@ -101,12 +101,9 @@ Beyond these core steps, real-world projects also involve:
 ✅ **Tracking experiments** (Keeping records of what works and what doesn’t)  
 ✅ **Monitoring data drift** (Checking if new data changes over time, making the model outdated)  
 
-
-
-
 # Machine Learning Task Overview
 
-This README provides an overview of the main **Machine Learning (ML)** tasks, categorizing them into **Supervised Learning** and **Unsupervised Learning**. It highlights key models used in each task, examples of use cases, and tips to help you understand and remember them.
+An overview of the main **Machine Learning (ML)** tasks, categorizing them into **Supervised Learning** and **Unsupervised Learning**. It highlights key models used in each task, examples of use cases, and tips to help you understand and remember them.
 
 ---
 
@@ -121,7 +118,6 @@ This README provides an overview of the main **Machine Learning (ML)** tasks, ca
    - [Clustering](#clustering)
    - [Dimensionality Reduction](#dimensionality-reduction)
    - [Anomaly Detection](#anomaly-detection)
-3. [Launch Jupyter Notebook](#launch-jupyter-notebook)
 
 ---
 
@@ -238,7 +234,6 @@ Unsupervised learning works with **unlabeled data** to discover hidden patterns,
 - **Anomaly Detection** = "Detect **Outliers**".
 
 ---
-
 
 ### **Beginner-Friendly Guide to Supervised Machine Learning**  
 

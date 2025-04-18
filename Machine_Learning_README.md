@@ -335,8 +335,6 @@ Ask yourself: **What is the target variable?**
 - If it’s a **number** → **Use regression**  
 - If it’s a **category** → **Use classification**  
 
-By understanding this, you can confidently choose the right model and evaluation method in **interviews and real-world projects**! 🚀
-
 ### **Beginner-Friendly Guide: Linear Regression**  
 
 **Linear regression** is one of the simplest and most widely used models in machine learning. It helps us **predict a number** based on input features by finding a **straight-line relationship** between them.  

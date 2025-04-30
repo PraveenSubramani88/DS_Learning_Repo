@@ -17,14 +17,14 @@ conda info --envs
 ### ✅ Create a New Conda Environment (if needed)
 To create a new environment (e.g., `py_env`) with a specific version of Python, run:
 ```bash
-conda create --name py_env python=3.9
+conda create --name agent_env python=3.9
 ```
 
 You can replace `3.9` with your desired version of Python.
 
-### ✅ Activate Desired Environment (e.g., `py_env`)
+### ✅ Activate Desired Environment (e.g., `agent_env`)
 ```bash
-conda activate py_env
+conda activate agent_env
 ```
 
 ### 🚀 Install Jupyter Notebook (if not installed)

@@ -27,6 +27,11 @@ You can replace `3.9` with your desired version of Python.
 conda activate agent_env
 ```
 
+### ❌ Remove Desired Environment (e.g., `agent_env`)
+```bash
+conda env remove --name agent_env
+```
+
 ### 🚀 Install Jupyter Notebook (if not installed)
 If Jupyter is not already installed in your environment, you can install it by running:
 ```bash

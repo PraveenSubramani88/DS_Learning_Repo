@@ -8,6 +8,7 @@ Nice — below I’ve added **simple, copy-pasteable code** for each of the 10 b
 ---
 
 # ✅ 1 — What is MLflow Tracking used for?
+MLflow Tracking is used to record your ML experiments, so you can compare runs, see what worked, and reproduce results later.
 Short example: create an experiment, start a run, and log a metric.
 
 ```python
@@ -26,6 +27,13 @@ with mlflow.start_run(run_name="simple_run"):
 ---
 
 # ✅ 2 — Log the three most important things (params, metrics, artifacts)
+
+1. Parameters (hyperparameters you used)
+2. Metrics (accuracy, loss, RMSE, etc.)
+3. Artifacts (plots, models, files)
+
+These three give you 80% of MLflow’s value.
+
 Example showing all three:
 
 ```python
@@ -53,6 +61,10 @@ with mlflow.start_run():
 ---
 
 # ✅ 3 — What is an Experiment? (create / switch experiments)
+
+An experiment is a folder/group that contains many related runs.
+It helps you stay organized (e.g., “baseline-models”, “xgboost-tests”).
+
 Create or switch experiments programmatically:
 
 ```python
@@ -69,6 +81,10 @@ with mlflow.start_run():
 ---
 
 # ✅ 4 — What is a Run? (one training attempt)
+
+A run is one execution of training.
+Every run stores: parameters → metrics → artifacts.
+
 Each `start_run()` is a run — example training attempt skeleton:
 
 ```python
@@ -84,6 +100,9 @@ with mlflow.start_run(run_name="attempt_1"):
 ---
 
 # ✅ 5 — Where artifacts are stored locally (`./mlruns/`)
+
+In a folder called `./mlruns/` inside your project.
+
 No code needed to create the folder — mlflow creates it. Example listing artifact path for a run:
 
 ```python
@@ -105,6 +124,17 @@ with mlflow.start_run() as run:
 ---
 
 # ✅ 6 — Why MLflow vs Excel/Notion (practical)
+
+Because MLflow:
+
+ logs automatically
+ stores files
+ keeps models
+ compares runs
+ ensures reproducibility
+  Excel cannot do any of that reliably.
+
+
 Simple example showing repeatability — log random seed and params so later you can reproduce:
 
 ```python
@@ -123,6 +153,12 @@ with mlflow.start_run():
 ---
 
 # ✅ 7 — Logging a model vs artifact
+
+Model = a deployable ML model (like a pickle or MLflow model).
+Artifact = any other file (plots, data, logs).
+
+A model is an artifact, but it’s treated specially for loading/serving.
+
 Model logging (specialized) vs generic artifact:
 
 ```python
@@ -163,6 +199,9 @@ preds = loaded.predict(Xte)
 ---
 
 # ✅ 8 — What `mlflow.autolog()` does (sklearn example)
+
+It automatically logs parameters, metrics, and the trained model without you writing manual logging code.
+
 Autologging automatically captures params, metrics, and model for many libraries.
 
 ```python
@@ -189,6 +228,18 @@ with mlflow.start_run():
 ---
 
 # ✅ 9 — MLflow UI (how to run / view)
+
+The MLflow UI is a website (localhost:5000) that lets you view:
+
+your runs
+metrics
+params
+artifacts
+models
+
+It makes experiment comparison easy.
+
+
 Run in terminal:
 
 ```bash
@@ -201,6 +252,14 @@ Then open `http://localhost:5000` in your browser and explore experiments, runs,
 ---
 
 # ✅ 10 — Typical MLflow workflow (put together in one example)
+
+1. Start run
+2. Train model
+3. Log results
+4. End run
+
+This is the core loop everyone uses.
+
 A small complete script that follows: start run → train → log results → end run.
 
 ```python
@@ -246,5 +305,6 @@ If you want, I can:
 - Turn these into a single notebook file for you to run, or
 - Provide a tiny Dockerfile + command to run MLflow UI and script together, or
 - Quiz you on one of the snippets (I’ll give feedback on your answers).
+
 
 Which of those would you like next?

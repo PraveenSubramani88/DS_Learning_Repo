@@ -374,3 +374,41 @@ This is the real magic of DVC.
 | `dvc.yaml` basics                  | pipeline description       |
 
 That's all you need to be productive.
+
+
+
+### **✔ Corrected workflow:**
+
+1. I download a large dataset locally (e.g., 20GB).
+2. I run `dvc add` to track it.
+3. I commit only the `.dvc` metadata file to Git.
+4. I push the actual data to a **DVC remote** (S3/Drive/etc) using:
+
+   ```
+   dvc push
+   ```
+5. My friend clones the repo from Git:
+
+   ```
+   git clone <repo>
+   ```
+6. Then they download the real dataset from the DVC remote using:
+
+   ```
+   dvc pull
+   ```
+7. Now they have the exact same 20GB dataset without needing my local files.
+
+---
+
+# 🎯 Quick analogy to know you understood it
+
+| Step               | Meaning                                 |
+| ------------------ | --------------------------------------- |
+| `.dvc` file in Git | Shopping list                           |
+| DVC remote         | Supermarket                             |
+| `dvc pull`         | Buying the actual food                  |
+| Your friend        | Another cook using the same ingredients |
+
+Your friend doesn’t get ingredients from your notebook —
+they get them from the supermarket (DVC remote).

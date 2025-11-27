@@ -1,0 +1,250 @@
+Nice — below I’ve added **simple, copy-pasteable code** for each of the 10 beginner (80/20) items. Each snippet is short and focused so you can run it and see the behaviour quickly.
+
+> Notes before you run:
+> - These examples assume `mlflow` is installed (`pip install mlflow`) and (for the sklearn examples) `scikit-learn` is installed.
+> - By default MLflow will create a local `./mlruns/` directory to store runs & artifacts.  
+> - To open the UI after running an example: run `mlflow ui` in your terminal and open `http://localhost:5000`.
+
+---
+
+# ✅ 1 — What is MLflow Tracking used for?
+Short example: create an experiment, start a run, and log a metric.
+
+```python
+import mlflow
+
+# set or create a named experiment
+mlflow.set_experiment("my_first_experiment")
+
+# start a run and log a metric
+with mlflow.start_run(run_name="simple_run"):
+    mlflow.log_param("model_type", "baseline")
+    mlflow.log_metric("accuracy", 0.72)
+    # artifacts can be logged here too
+```
+
+---
+
+# ✅ 2 — Log the three most important things (params, metrics, artifacts)
+Example showing all three:
+
+```python
+import mlflow
+import json
+
+mlflow.set_experiment("params_metrics_artifacts")
+
+with mlflow.start_run():
+    # Parameters (hyperparams)
+    mlflow.log_param("learning_rate", 0.01)
+    mlflow.log_param("n_estimators", 100)
+
+    # Metrics
+    mlflow.log_metric("train_loss", 0.15)
+    mlflow.log_metric("val_accuracy", 0.81)
+
+    # Artifacts: save a small file and log it
+    report = {"note": "first run"}
+    with open("report.json", "w") as f:
+        json.dump(report, f)
+    mlflow.log_artifact("report.json")   # uploaded to run's artifact folder
+```
+
+---
+
+# ✅ 3 — What is an Experiment? (create / switch experiments)
+Create or switch experiments programmatically:
+
+```python
+import mlflow
+
+# creates if not exists, or switches to it if exists
+mlflow.set_experiment("customer_churn_experiment")
+
+with mlflow.start_run():
+    mlflow.log_param("setup", "v1")
+    mlflow.log_metric("accuracy", 0.78)
+```
+
+---
+
+# ✅ 4 — What is a Run? (one training attempt)
+Each `start_run()` is a run — example training attempt skeleton:
+
+```python
+import mlflow
+
+with mlflow.start_run(run_name="attempt_1"):
+    # everything between start and end is recorded as one "run"
+    mlflow.log_param("seed", 42)
+    mlflow.log_metric("some_metric", 0.5)
+    # run ends automatically when exiting context
+```
+
+---
+
+# ✅ 5 — Where artifacts are stored locally (`./mlruns/`)
+No code needed to create the folder — mlflow creates it. Example listing artifact path for a run:
+
+```python
+import mlflow
+from pathlib import Path
+
+mlflow.set_experiment("artifacts_demo")
+with mlflow.start_run() as run:
+    mlflow.log_artifact("report.json")
+    run_id = run.info.run_id
+    artifact_uri = mlflow.get_artifact_uri()  # e.g., file:///.../mlruns/0/<run_id>/artifacts
+    print("Run ID:", run_id)
+    print("Artifact URI:", artifact_uri)
+    # Locally you'll see artifacts under ./mlruns/ (unless tracking URI changed)
+    local_path = Path("mlruns")
+    print("Check local folder:", local_path.resolve())
+```
+
+---
+
+# ✅ 6 — Why MLflow vs Excel/Notion (practical)
+Simple example showing repeatability — log random seed and params so later you can reproduce:
+
+```python
+import mlflow
+import random
+
+mlflow.set_experiment("repro_demo")
+with mlflow.start_run():
+    mlflow.log_param("seed", 123)
+    random.seed(123)
+    value = random.random()
+    mlflow.log_metric("random_value", value)
+# Later you can read the run metadata to reproduce using the same 'seed'
+```
+
+---
+
+# ✅ 7 — Logging a model vs artifact
+Model logging (specialized) vs generic artifact:
+
+```python
+import mlflow
+import mlflow.sklearn
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+
+X, y = load_iris(return_X_y=True)
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42)
+
+mlflow.set_experiment("model_vs_artifact")
+with mlflow.start_run():
+    clf = RandomForestClassifier(n_estimators=10, random_state=42)
+    clf.fit(Xtr, ytr)
+    score = clf.score(Xte, yte)
+    mlflow.log_metric("test_accuracy", score)
+
+    # Log model (special: supports pyfunc / loading via mlflow)
+    mlflow.sklearn.log_model(clf, artifact_path="model")
+
+    # Log some other file as an artifact (generic)
+    with open("notes.txt", "w") as f:
+        f.write("This is a training run note.")
+    mlflow.log_artifact("notes.txt")
+```
+
+To load the saved model from a run (by run id):
+```python
+# mlflow.sklearn.load_model accepts a runs:/ URI
+loaded = mlflow.sklearn.load_model("runs:/<RUN_ID>/model")
+preds = loaded.predict(Xte)
+```
+
+(Replace `<RUN_ID>` with the printed run id or via the UI.)
+
+---
+
+# ✅ 8 — What `mlflow.autolog()` does (sklearn example)
+Autologging automatically captures params, metrics, and model for many libraries.
+
+```python
+import mlflow
+import mlflow.sklearn
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+
+mlflow.set_experiment("autolog_demo")
+mlflow.sklearn.autolog()   # enable autologging for sklearn
+
+X, y = load_iris(return_X_y=True)
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42)
+
+with mlflow.start_run():
+    clf = RandomForestClassifier(n_estimators=20, random_state=42)
+    clf.fit(Xtr, ytr)   # params, model, and some metrics are logged automatically
+    # No explicit mlflow.log_param/log_metric required here
+```
+
+**When not to use autolog**: if you need fine control over what/when to log (large artifacts you don’t want), or if autolog adds too much noisy data.
+
+---
+
+# ✅ 9 — MLflow UI (how to run / view)
+Run in terminal:
+
+```bash
+# start the MLflow web UI (default port 5000)
+mlflow ui
+```
+
+Then open `http://localhost:5000` in your browser and explore experiments, runs, params, metrics, and artifacts.
+
+---
+
+# ✅ 10 — Typical MLflow workflow (put together in one example)
+A small complete script that follows: start run → train → log results → end run.
+
+```python
+# file: simple_train.py
+import mlflow
+import mlflow.sklearn
+from sklearn.datasets import load_iris
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+mlflow.set_experiment("simple_workflow")
+
+with mlflow.start_run(run_name="rf_trial"):
+    mlflow.log_param("seed", 42)
+    mlflow.log_param("n_estimators", 50)
+
+    X, y = load_iris(return_X_y=True)
+    Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    clf = RandomForestClassifier(n_estimators=50, random_state=42)
+    clf.fit(Xtr, ytr)
+    acc = clf.score(Xte, yte)
+
+    mlflow.log_metric("accuracy", acc)
+
+    # save model
+    mlflow.sklearn.log_model(clf, artifact_path="model")
+
+# run ends when context exits
+print("Done. Open mlflow UI to inspect results.")
+```
+
+Run it:
+```bash
+python simple_train.py
+mlflow ui
+# open http://localhost:5000
+```
+
+---
+
+If you want, I can:
+- Turn these into a single notebook file for you to run, or
+- Provide a tiny Dockerfile + command to run MLflow UI and script together, or
+- Quiz you on one of the snippets (I’ll give feedback on your answers).
+
+Which of those would you like next?

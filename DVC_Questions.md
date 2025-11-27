@@ -224,3 +224,153 @@ Repro guarantees **identical execution**.
 They complement each other, not replace.
 
 ---
+
+
+👉 *Learn the 20% of features that give you 80% of the real value.*
+
+Here is exactly what you need to know — **no fluff**, just the essentials that matter for real MLOps work.
+
+---
+
+# 🎯 **DVC: The 20% You Should Master (for 80% of the benefits)**
+
+Below are the only 5 things you truly need.
+
+---
+
+# **1️⃣ DVC adds version control to data (NOT stored in Git)**
+
+This is the core idea.
+
+Git can’t store big files, so DVC stores your dataset somewhere else (local folder, Google Drive, S3, etc.) and keeps only a small `.dvc` pointer in your repo.
+
+**You must understand:**
+
+* `dvc add <file>`
+* `.dvc` files point to real data
+* data lives in DVC remote storage
+
+### Commands:
+
+```
+dvc add data/train.csv
+dvc push
+dvc pull
+```
+
+That’s 80% of what people use DVC for.
+
+---
+
+# **2️⃣ DVC keeps your repo clean using a `.dvc` file**
+
+When you run:
+
+```bash
+dvc add data/train.csv
+```
+
+You get:
+
+```
+data/train.csv.dvc   ← tracked
+data/.gitignore      ← file ignored
+```
+
+This is how data can be versioned *without* living inside GitHub.
+
+You don’t need deep knowledge — just understand:
+
+* `.dvc` files = metadata
+* actual data = stored separately
+
+---
+
+# **3️⃣ DVC remote storage: push / pull**
+
+This is the *next most important* concept.
+
+You set up a remote:
+
+```
+dvc remote add -d storage gdrive://<id>
+```
+
+Then:
+
+```bash
+dvc push   # upload data to remote
+dvc pull   # download data from remote
+```
+
+Everyone on your team can **pull the exact same dataset**.
+
+That's 80% of team reproducibility right there.
+
+---
+
+# **4️⃣ DVC Pipelines (dvc.yaml)**
+
+This is where DVC becomes *really* useful.
+
+You define pipeline steps as dependencies:
+
+```
+dvc stage add -n train \
+  -d data/train.csv \
+  -d train.py \
+  -o model.pkl \
+  python train.py
+```
+
+This generates **dvc.yaml**, which describes your entire ML workflow.
+
+### Key idea:
+
+DVC uses file dependencies to determine what needs to be re-run.
+
+If the data changes → retrain
+If nothing changed → skip training
+
+### Run whole pipeline:
+
+```
+dvc repro
+```
+
+This is the most advanced part but still essential 20%.
+
+---
+
+# **5️⃣ Everything is reproducible**
+
+The best part:
+
+With just:
+
+```
+git clone <repo>
+dvc pull
+dvc repro
+```
+
+You can rebuild the entire model **exactly as the original author did**.
+
+This is the real magic of DVC.
+
+---
+
+# 🎯 **Summary: 80/20 DVC Skills Checklist**
+
+| Must know                          | Why                        |
+| ---------------------------------- | -------------------------- |
+| `dvc init`                         | start project              |
+| `dvc add`                          | track datasets without Git |
+| `.dvc` pointer files               | understand metadata        |
+| `dvc push/pull`                    | share datasets             |
+| remote storage (local, gdrive, s3) | team collaboration         |
+| `dvc stage add`                    | define pipeline steps      |
+| `dvc repro`                        | reproduce ML workflow      |
+| `dvc.yaml` basics                  | pipeline description       |
+
+That's all you need to be productive.

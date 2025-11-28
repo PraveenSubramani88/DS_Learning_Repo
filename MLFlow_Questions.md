@@ -299,12 +299,265 @@ mlflow ui
 # open http://localhost:5000
 ```
 
+
+# 🌟 Your 80/20 Roadmap for MLflow (as your mentor)
+
+The entire MLflow ecosystem has 4 components, but **the 20% that gives you 80% results** is:
+
+1. **Tracking** (you already got this)
+2. **Models** (saving + loading + packaging)
+3. **Model Registry** (real-world workflows)
+4. **Serving** (local → REST API → production-like)
+
+We’ll go through them in that exact order.
+
 ---
 
-If you want, I can:
-- Turn these into a single notebook file for you to run, or
-- Provide a tiny Dockerfile + command to run MLflow UI and script together, or
-- Quiz you on one of the snippets (I’ll give feedback on your answers).
+# ✅ Part 1 — MLflow Models (80/20 understanding)
+
+MLflow Models = standardized way to save/load models so they can be deployed anywhere.
+
+### 🧠 Mental model
+
+Think of MLflow Models like **Docker for ML models**:
+“Package once → run anywhere”.
+
+---
+
+## 📌 How to Save a Model
+
+You already logged sklearn models. Now let’s do it **barebones minimal**:
+
+```python
+import mlflow
+import mlflow.sklearn
+from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import load_iris
+
+X, y = load_iris(return_X_y=True)
+
+model = LogisticRegression(max_iter=200)
+model.fit(X, y)
+
+# Save to local folder (models folder created automatically)
+mlflow.sklearn.save_model(model, "my_lr_model")
+```
+
+This creates:
+
+```
+my_lr_model/
+    MLmodel 
+    model.pkl
+    conda.yaml
+```
+
+This folder is a **portable model package**.
+
+---
+
+## 📌 How to Load the Model Back
+
+```python
+import mlflow.sklearn
+
+loaded = mlflow.sklearn.load_model("my_lr_model")
+print(loaded.predict([[5.1, 3.5, 1.4, 0.2]]))
+```
+
+---
+
+## 🧪 80/20 takeaway
+
+**If you know how to save & load models → you’ve unlocked all of MLflow serving & registry.**
+
+---
+
+# ✅ Part 2 — MLflow Model Registry (80/20 version)
+
+## 🧠 Mental model
+
+Model Registry is like **Git + Versions + Status** for models.
+
+Models can be in states:
+
+* **None (just logged)**
+* **Staging** (ready to test)
+* **Production** (serving users)
+* **Archived**
+
+---
+
+## 📌 Register a Model
+
+After logging a model inside a run:
+
+```python
+import mlflow
+
+with mlflow.start_run() as run:
+    mlflow.sklearn.log_model(
+        sk_model=model,
+        artifact_path="model",
+        registered_model_name="IrisClassifier"
+    )
+```
+
+This:
+
+✔️ Logs the model
+✔️ Creates a model registry entry called **IrisClassifier**
+✔️ Creates version **1**
+
+---
+
+## 📌 Move model to **Staging** or **Production**
+
+```python
+from mlflow import MlflowClient
+
+client = MlflowClient()
+client.transition_model_version_stage(
+    name="IrisClassifier",
+    version=1,
+    stage="Production"
+)
+```
+
+Common stages: `"Staging"`, `"Production"`, `"Archived"`.
+
+---
+
+## 📌 Load a Model from Registry (Production version)
+
+```python
+prod_model = mlflow.pyfunc.load_model("models:/IrisClassifier/Production")
+pred = prod_model.predict([[5.1, 3.5, 1.4, 0.2]])
+print(pred)
+```
+
+This is huge.
+Production pipelines can now *always load the correct model* automatically.
+
+---
+
+## 🧪 80/20 takeaway
+
+There are only 3 things you do with the registry:
+
+1. Register a model
+2. Promote/demote versions
+3. Load a model by stage (“give me latest Production model”)
+
+That’s 80% of real-world MLOps.
+
+---
+
+# ✅ Part 3 — MLflow Model Serving (zero-to-hero in 2 steps)
+
+## 🧠 Mental model
+
+Think of MLflow Serving as **FastAPI already done for you**.
+
+You don’t need to build REST servers manually.
+
+---
+
+## 📌 Serve a local logged model
+
+```bash
+mlflow models serve -m my_lr_model -p 5001
+```
+
+Now send data:
+
+```bash
+curl -X POST http://127.0.0.1:5001/invocations \
+    -H "Content-Type: application/json" \
+    -d '{"inputs": [[5.1, 3.5, 1.4, 0.2]]}'
+```
+
+---
+
+## 📌 Serve a **Production Registry model**
+
+```bash
+mlflow models serve -m "models:/IrisClassifier/Production" -p 5002
+```
+
+This is real MLOps infrastructure on your laptop.
+
+---
+
+# ✅ Part 4 — MLflow in a Real Project (80/20 template)
+
+Here’s the **minimal project structure** you’ll see in companies:
+
+```
+project/
+├── train.py         # training + logging
+├── predict.py       # loads Production model from registry
+├── requirements.txt
+├── mlruns/          # auto-created
+```
+
+---
+
+### train.py
+
+```python
+import mlflow
+import mlflow.sklearn
+from sklearn.datasets import load_iris
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+mlflow.set_experiment("iris_project")
+
+with mlflow.start_run():
+    X, y = load_iris(return_X_y=True)
+    Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2)
+
+    model = RandomForestClassifier(n_estimators=50)
+    model.fit(Xtr, ytr)
+    acc = model.score(Xte, yte)
+
+    mlflow.log_param("n_estimators", 50)
+    mlflow.log_metric("accuracy", acc)
+
+    mlflow.sklearn.log_model(
+        model,
+        artifact_path="model",
+        registered_model_name="IrisClassifier"
+    )
+```
+
+---
+
+### predict.py
+
+```python
+import mlflow.pyfunc
+
+model = mlflow.pyfunc.load_model("models:/IrisClassifier/Production")
+print(model.predict([[5.1, 3.5, 1.4, 0.2]]))
+```
+
+This is **exactly** how teams do MLOps with MLflow.
+
+---
+
+# 🔥 What you’ve unlocked so far
+
+You now understand the **80/20 of MLflow**:
+
+| Topic    | 80/20 Skill                        | Why it matters              |
+| -------- | ---------------------------------- | --------------------------- |
+| Tracking | params + metrics + artifacts       | Experimentation mastery     |
+| Models   | save + load                        | Deploy anywhere & reproduce |
+| Registry | register + promote + load by stage | Real-world MLOps pipelines  |
+| Serving  | serve models + REST API            | Deployment / inference      |
+
+You’re now 70% of the way to **full MLflow proficiency**.
 
 
-Which of those would you like next?

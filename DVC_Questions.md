@@ -412,3 +412,287 @@ That's all you need to be productive.
 
 Your friend doesn’t get ingredients from your notebook —
 they get them from the supermarket (DVC remote).
+
+
+# 🎯 **DVC 80/20 — Intermediate Level (Part 2)**
+
+*The next 20% of the features that give you another 60% of the value.*
+
+We’ll cover:
+
+1. **DVC data lifecycle (cache, remotes, .dvc files, locking)**
+2. **DVC pipelines: real-world patterns**
+3. **DVC experiment tracking (the underrated gem)**
+4. **Best folder structures used by MLOps teams**
+5. **Common mistakes & anti-patterns**
+6. **DVC + MLflow integration pattern**
+
+Let’s go.
+
+---
+
+# **1️⃣ DVC Data Lifecycle (the part most beginners misunderstand)**
+
+When you run:
+
+```
+dvc add data/train.csv
+```
+
+Four important things happen:
+
+### **1. Data is moved to the DVC cache**
+
+Located at:
+
+```
+.dvc/cache/
+```
+
+This is DVC’s “private Git LFS-like” store.
+
+### **2. The working directory gets a *symlink* to the cache**
+
+Your `data/train.csv` is no longer a real file — it's a link to cache.
+
+This lets DVC:
+
+* deduplicate files
+* track hashes
+* detect changes quickly
+
+### **3. A small `train.csv.dvc` metadata file appears**
+
+Contains:
+
+* file hash
+* file path
+* version info
+
+### **4. This `.dvc` file is what you commit to Git**
+
+Not the data.
+
+### **⭐ Why this matters**
+
+If you understand DVC cache + .dvc metadata + remote storage,
+you understand 80% of DVC internals.
+
+---
+
+# **2️⃣ DVC Pipelines — 80/20 Edition**
+
+Most real workflows use **3–5 stages**:
+
+* data preparation
+* feature generation
+* training
+* evaluation
+* deployment artifact creation
+
+A real-world pattern:
+
+```bash
+dvc stage add -n prepare \
+  -d src/prepare.py -d data/raw \
+  -o data/processed \
+  python src/prepare.py
+
+dvc stage add -n features \
+  -d src/features.py -d data/processed \
+  -o data/features \
+  python src/features.py
+
+dvc stage add -n train \
+  -d src/train.py -d data/features \
+  -o model.pkl \
+  python src/train.py
+```
+
+Produces a clean `dvc.yaml` like:
+
+### ⭐ Why this matters
+
+DVC pipelines are **file-based dependency graphs**.
+
+Change a file → only affected stages rerun.
+
+This gives:
+
+* speed
+* reproducibility
+* full ML workflow documentation
+
+That’s 95% of why companies adopt DVC.
+
+---
+
+# **3️⃣ DVC Experiments (the most underrated feature)**
+
+Most people don’t know this,
+but **DVC has experiment tracking similar to MLflow**.
+
+You run:
+
+```
+dvc exp run
+```
+
+And DVC:
+
+* stores metrics
+* stores parameters
+* stores artifacts
+* version-controls everything automatically
+
+You can list experiments:
+
+```
+dvc exp show
+```
+
+Compare them:
+
+```
+dvc exp diff
+```
+
+Promote the best experimental run into Git:
+
+```
+dvc exp apply <id>
+```
+
+### ⭐ When to use DVC experiments?
+
+* Fast prototyping
+* Branchless experimentation
+* When MLflow is “too much” for a simple project
+
+This is an 80/20 feature that saves hours per week.
+
+---
+
+# **4️⃣ Recommended ML Project Folder Structure**
+
+Here is the structure used in many MLOps teams:
+
+```
+project/
+│
+├── data/              ← raw and processed data (DVC tracked)
+│
+├── src/
+│   ├── data/          ← data loading scripts
+│   ├── features/      ← feature engineering
+│   ├── models/        ← model training scripts
+│   ├── utils/
+│
+├── models/            ← model.pkl, checkpoints (DVC tracked)
+│
+├── dvc.yaml
+├── dvc.lock
+├── params.yaml        ← hyperparameters
+│
+└── README.md
+```
+
+### ⭐ Why this matters
+
+DVC works best when:
+
+* data is in `data/`
+* models are in `models/`
+* code is separate (inside `src/`)
+
+This 80/20 structure prevents pipeline spaghetti.
+
+---
+
+# **5️⃣ Common Mistakes (to save weeks of pain)**
+
+### **❌ 1. Tracking too many files separately**
+
+Bad:
+
+```
+dvc add data/image1.jpg
+dvc add data/image2.jpg
+```
+
+Good:
+
+```
+dvc add data/images/
+```
+
+### **❌ 2. Using Git LFS + DVC together**
+
+Redundant and slows everything down.
+
+### **❌ 3. Storing data inside the repo BEFORE running dvc add**
+
+Always:
+
+* drop data into folder
+* immediately `dvc add`
+* **never commit data to Git**
+
+### **❌ 4. Forgetting to `dvc push` before switching machines**
+
+Rule:
+
+> After *any* DVC add/repro:
+> **Always run `dvc push`**
+
+---
+
+# **6️⃣ DVC + MLflow — The Perfect Workflow**
+
+Here’s the industry-standard:
+
+| What                     | Tool                       |
+| ------------------------ | -------------------------- |
+| Data versioning          | DVC                        |
+| Pipeline reproducibility | DVC                        |
+| Dataset storage          | S3 / GDrive via DVC        |
+| Experiment metrics       | MLflow                     |
+| Hyperparameters          | params.yaml (DVC) + MLflow |
+| Model registry           | MLflow Model Registry      |
+| Deployment               | MLflow, Docker, FastAPI    |
+
+### Concrete flow:
+
+1. Store datasets with **DVC**
+2. Use **DVC pipeline** to run the ML workflow
+3. During training, log metrics to **MLflow**
+4. Version the final model in **MLflow Registry**
+5. Deploy via FASTAPI + Docker
+
+### ⭐ Why this works
+
+DVC and MLflow don’t overlap.
+They solve different parts of the ML lifecycle.
+
+---
+
+# 🎓 Part 2 Summary — The 80/20 DVC Next-Level Checklist
+
+You now know the essentials PLUS the next layer:
+
+### ✔ DVC cache structure
+
+### ✔ Understanding `.dvc` files
+
+### ✔ Best practice folder structure
+
+### ✔ Multi-stage pipelines
+
+### ✔ DVC experiments (exp run / exp diff / exp apply)
+
+### ✔ DVC + MLflow integration
+
+### ✔ Common mistakes to avoid
+
+If you master the topics above, you’re already more advanced than **90% of DVC users**.
+

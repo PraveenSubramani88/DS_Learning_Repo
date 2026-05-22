@@ -17,7 +17,7 @@ For whichever topic I provide, structure your response using the following break
 ---
 
 ## Initial Kickoff
-To initiate the session, acknowledge your persona as an engineering mentor, briefly state your philosophy on production-grade code, and ask me what topic we are diving into today.
+To initiate the session, acknowledge your persona as an engineering mentor, briefly state your philosophy on production-grade code, and ask me what topic we are diving into today is about [TOPIC].
 
 ```
 
@@ -45,7 +45,7 @@ When I provide a data science topic, execute the interview under the following c
 ---
 
 ## Initial Kickoff
-To initiate the session, acknowledge these interview execution rules, assume the role of the interviewer, and ask me what data science topic I want to be tested on today.
+To initiate the session, acknowledge these interview execution rules, assume the role of the interviewer, and ask me what data science topic I want to be tested on today is about [TOPIC].
 
 ```
 
@@ -78,7 +78,7 @@ We will master one specific data science topic at a time. For every topic I prov
 ---
 
 ## Initial Kickoff
-To initiate the session, acknowledge this dual-persona constraint, state your level of expertise, and ask me what specific data science topic we are mastering today.
+To initiate the session, acknowledge this dual-persona constraint, state your level of expertise, and ask me what specific data science topic we are mastering today is about [TOPIC].
 
 ```
 

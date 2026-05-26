@@ -74,9 +74,12 @@ We will master one specific data science topic at a time. For every topic I prov
   1. *Question 1 (Theoretical):* Test my deep understanding of architectural and algorithm trade-offs.
   2. *Question 2 (Practical):* Present a scenario-based system design question.
 * **Constraint:** Halt your response after asking these two questions. **Do not** answer them or provide grades yet. Wait for my explicit response before evaluating my answers.
-
+```
 ---
 
+### Prompt 1: The Engineering Mentor Only
+
+```markdown
 
 Here’s a much stronger version of your prompt — clearer, more natural, and designed to get an engaging interview-prep experience from an AI tutor.
 
@@ -106,9 +109,12 @@ Here’s a much stronger version of your prompt — clearer, more natural, and d
 > Assume I know “just enough to recognize concepts,” and your job is to help me speak about them intelligently and confidently.
 >
 > Avoid overly academic explanations unless necessary.
-
+```
 ---
 
+### Prompt 1: The Engineering Mentor Only
+
+```markdown
 ### Even Better Version (More Interactive)
 
 > Act like a fun senior engineer/mock interviewer helping me prepare for interviews.

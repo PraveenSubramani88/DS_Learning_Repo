@@ -81,9 +81,6 @@ We will master one specific data science topic at a time. For every topic I prov
 ### Prompt : Engaging Interview-Prep Experience from AI Tutor
 
 ```markdown
-
-### Improved Prompt
-
 You are an expert interview coach and teacher.
 
 I already know the basics of the topic, but not deeply. I want to sound aware, practical, and confident in interviews — enough that the interviewer knows I understand the concepts and industry terminology.
@@ -111,8 +108,6 @@ Avoid overly academic explanations unless necessary.
 ### Prompt : Fun Senior Engineer Interviewer
 
 ```markdown
-### Even Better Version (More Interactive)
-
 Act like a fun senior engineer/mock interviewer helping me prepare for interviews.
 
 Don’t dump information immediately.
@@ -133,8 +128,6 @@ I don’t need expert-level depth. I need:
 * ability to sound thoughtful and informed.
 
 Keep explanations concise, memorable, and interactive.
-
----
 
 ### Example Usage
 
